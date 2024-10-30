@@ -462,7 +462,7 @@ Transform:
   m_GameObject: {fileID: 1269808306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.89, y: 7.23, z: 0}
+  m_LocalPosition: {x: -6.45, y: 6.05, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -480,12 +480,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4b7ff4817a90b45a67ffd3140718da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  minX: -8.5
+  maxX: 8.5
+  minY: -4.5
+  maxY: 4.5
   newPositionRadius: 4
-  speed: 1
+  speed: 0.1
   enterMapSpeed: 1
   enterMapDepth: 2
-  targetReachedRadius: 0.5
-  waterFricLerp: 0.1
+  targetReachedRadius: 1
+  waterFricLerp: 0.08
 --- !u!50 &1269808310
 Rigidbody2D:
   serializedVersion: 4

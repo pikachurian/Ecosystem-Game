@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Diver : MonoBehaviour
 {
+    public float minX = 0f;
+    public float maxX = 100f;
+    public float minY = 0f;
+    public float maxY = 100f;
     public float newPositionRadius = 4f;
     public float speed = 1f;
     public float enterMapSpeed = 3f;
@@ -17,10 +21,12 @@ public class Diver : MonoBehaviour
 
     private Vector3 targetPosition = Vector3.zero;
     private float nullFloat = 1000.1f;
+    private Vector3 nullVector3 = Vector3.zero;
 
     // Start is called before the first frame update
     void Start()
     {
+        nullVector3 = new Vector3(nullFloat, nullFloat, nullFloat);
         rb = GetComponent<Rigidbody2D>();
         SwitchState(DiverState.EnterMap);
     }
@@ -39,8 +45,13 @@ public class Diver : MonoBehaviour
                 break;
 
             case DiverState.Searching:
-                
+                if (Vector3.Distance(transform.position, targetPosition) <= targetReachedRadius)
+                {
+                    SetRandomTargetPosition(nullVector3);
+                    print(name + " reached target position");
+                }
 
+                MoveTowards(targetPosition, speed);
                 rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, waterFricLerp);
                 break;
         }
@@ -53,6 +64,7 @@ public class Diver : MonoBehaviour
         {
             case DiverState.EnterMap:
                 //rb.velocity *= 0.1f;
+                rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f);
                 break;
         }
 
@@ -66,7 +78,7 @@ public class Diver : MonoBehaviour
 
                 Vector3 dir = targetPosition - transform.position;
                 rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);*/
-                PushOffTowardsRandomTargetPosition(new Vector3(nullFloat, enterMapDepth, nullFloat));
+                PushOffTowardsRandomTargetPosition(new Vector3(nullFloat, enterMapDepth, nullFloat), enterMapSpeed);
                 break;
 
             case DiverState.Searching:
@@ -76,18 +88,20 @@ public class Diver : MonoBehaviour
                 targetPosition.y = transform.position.x + rollY;
 
                 rb.AddForce((targetPosition - transform.position) * enterMapSpeed, ForceMode2D.Impulse);*/
+                //PushOffTowardsRandomTargetPosition(nullVector3, speed);
+                SetRandomTargetPosition(nullVector3);
                 break;
         }
 
         _state = newState;
     }
 
-    private void PushOffTowardsRandomTargetPosition(Vector3 positionOverride)
+    private void PushOffTowardsRandomTargetPosition(Vector3 positionOverride, float force)
     {
         SetRandomTargetPosition(positionOverride);
 
         Vector3 dir = targetPosition - transform.position;
-        rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);
+        rb.AddForce(dir * force, ForceMode2D.Impulse);
     }
 
     private void SetRandomTargetPosition(Vector3 positionOverride)
@@ -105,7 +119,23 @@ public class Diver : MonoBehaviour
         else
         {
             float rollY = Random.Range(-newPositionRadius, newPositionRadius);
-            targetPosition.y = transform.position.x + rollY;
+            targetPosition.y = transform.position.y + rollY;
         }
+
+        //Clamp values inside window
+        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
+        targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
+    }
+
+    private void MoveTowards(Vector3 target, float force)
+    {
+        Vector3 dir = target - transform.position;
+        rb.AddForce(dir * force, ForceMode2D.Impulse);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(targetPosition, targetReachedRadius);
     }
 }
