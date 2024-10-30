@@ -16,6 +16,7 @@ public class Diver : MonoBehaviour
     private DiverState _state = DiverState.EnterMap;
 
     private Vector3 targetPosition = Vector3.zero;
+    private float nullFloat = 1000.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +39,8 @@ public class Diver : MonoBehaviour
                 break;
 
             case DiverState.Searching:
+                
+
                 rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, waterFricLerp);
                 break;
         }
@@ -57,15 +60,52 @@ public class Diver : MonoBehaviour
         switch (newState)
         {
             case DiverState.EnterMap:
-                float roll = Random.Range(-newPositionRadius, newPositionRadius);
+                /*float roll = Random.Range(-newPositionRadius, newPositionRadius);
                 targetPosition.x = transform.position.x + roll;
                 targetPosition.y = enterMapDepth;
 
                 Vector3 dir = targetPosition - transform.position;
-                rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);
+                rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);*/
+                PushOffTowardsRandomTargetPosition(new Vector3(nullFloat, enterMapDepth, nullFloat));
+                break;
+
+            case DiverState.Searching:
+                /*float rollX = Random.Range(-newPositionRadius, newPositionRadius);
+                targetPosition.x = transform.position.x + rollX;
+                float rollY = Random.Range(-newPositionRadius, newPositionRadius);
+                targetPosition.y = transform.position.x + rollY;
+
+                rb.AddForce((targetPosition - transform.position) * enterMapSpeed, ForceMode2D.Impulse);*/
                 break;
         }
 
         _state = newState;
+    }
+
+    private void PushOffTowardsRandomTargetPosition(Vector3 positionOverride)
+    {
+        SetRandomTargetPosition(positionOverride);
+
+        Vector3 dir = targetPosition - transform.position;
+        rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);
+    }
+
+    private void SetRandomTargetPosition(Vector3 positionOverride)
+    {
+        if (positionOverride != null && positionOverride.x != nullFloat)
+            targetPosition.x = positionOverride.x;
+        else
+        {
+            float rollX = Random.Range(-newPositionRadius, newPositionRadius);
+            targetPosition.x = transform.position.x + rollX;
+        }
+
+        if (positionOverride != null && positionOverride.y !=nullFloat)
+            targetPosition.y = positionOverride.y;
+        else
+        {
+            float rollY = Random.Range(-newPositionRadius, newPositionRadius);
+            targetPosition.y = transform.position.x + rollY;
+        }
     }
 }
