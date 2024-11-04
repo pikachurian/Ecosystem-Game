@@ -14,10 +14,11 @@ public class Diver : MonoBehaviour
     public float enterMapSpeed = 3f;
     public float enterMapDepth = 3f;
     public float targetReachedRadius = 1f;
-    public float waterFricLerp = 0.5f;
+    //public float waterFricLerp = 0.5f;
     public LayerMask treasureMask;
 
     private Rigidbody2D rb;
+    private Floaty floaty;
     private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway}
     private DiverState _state = DiverState.EnterMap;
 
@@ -30,6 +31,7 @@ public class Diver : MonoBehaviour
     {
         nullVector3 = new Vector3(nullFloat, nullFloat, nullFloat);
         rb = GetComponent<Rigidbody2D>();
+        floaty = GetComponent<Floaty>();
         SwitchState(DiverState.EnterMap);
     }
 
@@ -77,8 +79,8 @@ public class Diver : MonoBehaviour
                     }
                 }
 
-                MoveTowards(targetPosition, speed);
-                rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, waterFricLerp);
+                floaty.MoveTowards(targetPosition, speed);
+                floaty.ApplyFriction();
                 break;
         }
     }
@@ -112,8 +114,9 @@ public class Diver : MonoBehaviour
     {
         SetRandomTargetPosition(positionOverride);
 
-        Vector3 dir = targetPosition - transform.position;
-        rb.AddForce(dir * force, ForceMode2D.Impulse);
+        //Vector3 dir = targetPosition - transform.position;
+        //rb.AddForce(dir * force, ForceMode2D.Impulse);
+        floaty.MoveTowards(targetPosition, force);
     }
 
     private void SetRandomTargetPosition(Vector3 positionOverride)
@@ -139,11 +142,11 @@ public class Diver : MonoBehaviour
         targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
     }
 
-    private void MoveTowards(Vector3 target, float force)
+    /*private void MoveTowards(Vector3 target, float force)
     {
         Vector3 dir = target - transform.position;
         rb.AddForce(dir * force, ForceMode2D.Impulse);
-    }
+    }*/
 
     private void OnDrawGizmosSelected()
     {
