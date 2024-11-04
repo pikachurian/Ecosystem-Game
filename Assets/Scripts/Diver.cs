@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Diver : MonoBehaviour
@@ -14,6 +15,7 @@ public class Diver : MonoBehaviour
     public float enterMapDepth = 3f;
     public float targetReachedRadius = 1f;
     public float waterFricLerp = 0.5f;
+    public LayerMask treasureMask;
 
     private Rigidbody2D rb;
     private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway}
@@ -47,8 +49,32 @@ public class Diver : MonoBehaviour
             case DiverState.Searching:
                 if (Vector3.Distance(transform.position, targetPosition) <= targetReachedRadius)
                 {
-                    SetRandomTargetPosition(nullVector3);
-                    print(name + " reached target position");
+                    //Check if treasure is within the newPositionRadius
+                    Collider2D[] treasuresNearMe = Physics2D.OverlapCircleAll(transform.position, newPositionRadius, treasureMask);
+                    print(treasuresNearMe);
+                    if (treasuresNearMe.Length > 0)
+                    {
+                        //Get closest tresure
+                        GameObject closestTreasure = treasuresNearMe[0].gameObject;
+                        for (int i = 0; i < treasuresNearMe.Length; i++)
+                        {
+                            if (Vector3.Distance(transform.position, treasuresNearMe[i].transform.position) <
+                                Vector3.Distance(transform.position, closestTreasure.transform.position))
+                            {
+                                closestTreasure = treasuresNearMe[i].gameObject;
+                            }
+                        }
+
+                        //Set target position to treasure
+                        print(name + " is moving to treasure");
+                        SetRandomTargetPosition(closestTreasure.transform.position);
+                    }
+                    else
+                    {
+
+                        SetRandomTargetPosition(nullVector3);
+                        print(name + " reached target position");
+                    }
                 }
 
                 MoveTowards(targetPosition, speed);
@@ -63,7 +89,6 @@ public class Diver : MonoBehaviour
         switch(_state)
         {
             case DiverState.EnterMap:
-                //rb.velocity *= 0.1f;
                 rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f);
                 break;
         }
@@ -72,23 +97,10 @@ public class Diver : MonoBehaviour
         switch (newState)
         {
             case DiverState.EnterMap:
-                /*float roll = Random.Range(-newPositionRadius, newPositionRadius);
-                targetPosition.x = transform.position.x + roll;
-                targetPosition.y = enterMapDepth;
-
-                Vector3 dir = targetPosition - transform.position;
-                rb.AddForce(dir * enterMapSpeed, ForceMode2D.Impulse);*/
                 PushOffTowardsRandomTargetPosition(new Vector3(nullFloat, enterMapDepth, nullFloat), enterMapSpeed);
                 break;
 
             case DiverState.Searching:
-                /*float rollX = Random.Range(-newPositionRadius, newPositionRadius);
-                targetPosition.x = transform.position.x + rollX;
-                float rollY = Random.Range(-newPositionRadius, newPositionRadius);
-                targetPosition.y = transform.position.x + rollY;
-
-                rb.AddForce((targetPosition - transform.position) * enterMapSpeed, ForceMode2D.Impulse);*/
-                //PushOffTowardsRandomTargetPosition(nullVector3, speed);
                 SetRandomTargetPosition(nullVector3);
                 break;
         }
@@ -137,5 +149,7 @@ public class Diver : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(targetPosition, targetReachedRadius);
+
+        Gizmos.DrawWireSphere(transform.position, newPositionRadius);
     }
 }
