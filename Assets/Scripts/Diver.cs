@@ -19,12 +19,14 @@ public class Diver : MonoBehaviour
 
     private Rigidbody2D rb;
     private Floaty floaty;
-    private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway}
+    private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway, goingToTreasure}
     private DiverState _state = DiverState.EnterMap;
 
     private Vector3 targetPosition = Vector3.zero;
     private float nullFloat = 1000.1f;
     private Vector3 nullVector3 = Vector3.zero;
+
+    private GameObject targetedTreasure = null;
 
     // Start is called before the first frame update
     void Start()
@@ -70,6 +72,8 @@ public class Diver : MonoBehaviour
                         //Set target position to treasure
                         print(name + " is moving to treasure");
                         SetRandomTargetPosition(closestTreasure.transform.position);
+                        targetedTreasure = closestTreasure;
+                        SwitchState(DiverState.goingToTreasure);
                     }
                     else
                     {
@@ -77,6 +81,17 @@ public class Diver : MonoBehaviour
                         SetRandomTargetPosition(nullVector3);
                         print(name + " reached target position");
                     }
+                }
+
+                floaty.MoveTowards(targetPosition, speed);
+                floaty.ApplyFriction();
+                break;
+
+            case DiverState.goingToTreasure:
+                if (Vector3.Distance(transform.position, targetPosition) <= targetReachedRadius)
+                {
+                    targetedTreasure.GetComponent<Goldfish>().Grab(gameObject);
+                    SwitchState(DiverState.Searching);
                 }
 
                 floaty.MoveTowards(targetPosition, speed);

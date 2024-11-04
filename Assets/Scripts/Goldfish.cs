@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Gold : MonoBehaviour
+public class Goldfish : MonoBehaviour
 {
+    public float grabFollowForce = 0.5f;
+
     private Rigidbody2D rb;
+    private Floaty floaty;
     private enum GoldfishState { Treasure, Grabbed }
     private GoldfishState _state = GoldfishState.Treasure;
 
@@ -14,14 +17,18 @@ public class Gold : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        floaty = GetComponent<Floaty>();
         SwitchState(GoldfishState.Treasure);
     }
 
-    private void Update()
+    void FixedUpdate()
     {
         switch(_state)
-        { 
-            //cas
+        {
+            case GoldfishState.Grabbed:
+                floaty.MoveTowards(grabber.transform.position, grabFollowForce);
+                floaty.ApplyFriction();
+                break;
         }
     }
 
