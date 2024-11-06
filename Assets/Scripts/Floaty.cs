@@ -12,9 +12,12 @@ public class Floaty : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
-    public void ApplyFriction()
+    public void ApplyFriction(float frictionLerpOverride = 1000)
     {
-        rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, waterFricLerp);
+        if(frictionLerpOverride != 1000)
+            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, frictionLerpOverride);
+        else
+            rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, waterFricLerp);
     }
 
     public void MoveTowards(Vector3 target, float force)

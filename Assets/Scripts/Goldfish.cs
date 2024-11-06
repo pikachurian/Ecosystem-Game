@@ -43,7 +43,7 @@ public class Goldfish : MonoBehaviour
         //New state
         switch (newState)
         {
-
+            
         }
 
         _state = newState;
