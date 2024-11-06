@@ -329,6 +329,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   divers: []
   goldfish: []
+  diverSpawnX1: -8.28
+  diverSpawnY1: 8.46
+  diverSpawnX2: 8.57
+  diverSpawnY2: 5.46
+  startingDiversMax: 8
+  startingDiversMin: 3
 --- !u!4 &149523931
 Transform:
   m_ObjectHideFlags: 0

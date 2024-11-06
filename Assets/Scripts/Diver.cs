@@ -24,8 +24,8 @@ public class Diver : MonoBehaviour
     public float diveRecoveryTime = 1f;
     
 
-    private Rigidbody2D rb;
-    private Floaty floaty;
+    private Rigidbody2D rb = null;
+    private Floaty floaty = null;
     private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway, goingToTreasure, StartUp, DiveRecovery}
     private DiverState _state = DiverState.EnterMap;
 
@@ -154,6 +154,8 @@ public class Diver : MonoBehaviour
                 break;
 
             case DiverState.EnterMap:
+                if (rb == null)
+                    rb = GetComponent<Rigidbody2D>();
                 rb.velocity = Vector3.Lerp(rb.velocity, Vector3.zero, 0.1f);
                 break;
         }
@@ -198,6 +200,7 @@ public class Diver : MonoBehaviour
 
     private void Surfaced()
     {
+        EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.Diver, this.gameObject);
         print(name + " surfaced");
         Destroy(targetedTreasure);
         Destroy(this.gameObject);
