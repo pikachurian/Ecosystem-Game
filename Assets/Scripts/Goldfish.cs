@@ -6,23 +6,19 @@ using UnityEngine.UIElements;
 public class Goldfish : MonoBehaviour
 {
     public float grabFollowForce = 0.5f;
+
+    public float speed = 0.1f;
+
     public int childrenMax = 5;
     public int childrenMin = 2;
-
-    //public float newPositionRadius = 4f;
-    //public float targetReachedRadius = 1f;
 
     public LayerMask goldfishMask;
     public LayerMask fishFoodMask;
 
     private Rigidbody2D rb;
     private Floaty floaty;
-    private enum GoldfishState { Treasure, Grabbed, Wandering, GoingToFood, GoingToMate, Mating, RunAway}
+    private enum GoldfishState { Treasure, Grabbed, Wandering, GoingToFood, Reproducing, RunAway}
     private GoldfishState _state = GoldfishState.Treasure;
-
-    //private Vector3 targetPosition = Vector3.zero;
-    //private float nullFloat = 1000.1f;
-    //private Vector3 nullVector3 = Vector3.zero;
 
     private GameObject grabber;
 
@@ -33,7 +29,7 @@ public class Goldfish : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         floaty = GetComponent<Floaty>();
-        SwitchState(GoldfishState.Treasure);
+        SwitchState(GoldfishState.Wandering);
     }
 
     void FixedUpdate()
@@ -47,7 +43,13 @@ public class Goldfish : MonoBehaviour
                 break;
 
             case GoldfishState.Wandering:
+                if (floaty.TargetPositionReached())
+                {
+                    floaty.SetRandomTargetPosition(floaty.nullVector3);
+                }
 
+                floaty.MoveTowardsTargetPosition(speed);
+                floaty.ApplyFriction();
                 break;
         }
     }
@@ -63,7 +65,9 @@ public class Goldfish : MonoBehaviour
         //New state
         switch (newState)
         {
-            
+            case GoldfishState.Wandering:
+                floaty.SetRandomTargetPosition(floaty.nullVector3);
+                break;
         }
 
         _state = newState;
@@ -79,6 +83,13 @@ public class Goldfish : MonoBehaviour
     public bool IsGrabbed()
     {
         if (_state == GoldfishState.Grabbed)
+            return true;
+        return false;
+    }
+
+    public bool IsTreasure()
+    {
+        if (_state == GoldfishState.Treasure)
             return true;
         return false;
     }

@@ -5,17 +5,10 @@ using UnityEngine;
 
 public class Diver : MonoBehaviour
 {
-    //public float minX = 0f;
-    //public float maxX = 100f;
-    //public float minY = 0f;
-    //public float maxY = 100f;
     public float surfaceY = 0f;
-    //public float newPositionRadius = 4f;
     public float speed = 1f;
     public float enterMapSpeed = 3f;
     public float enterMapDepth = 3f;
-    //public float targetReachedRadius = 1f;
-    //public float waterFricLerp = 0.5f;
     public LayerMask treasureMask;
 
     public float startUpTimeMax = 2f;
@@ -29,10 +22,6 @@ public class Diver : MonoBehaviour
     private enum DiverState { EnterMap, Searching, TreasureFound, Surface, RunAway, GoingToTreasure, StartUp, DiveRecovery}
     private DiverState _state = DiverState.EnterMap;
 
-    //private Vector3 targetPosition = Vector3.zero;
-    //private float nullFloat = 1000.1f;
-    //private Vector3 nullVector3 = Vector3.zero;
-
     private Goldfish targetedTreasure = null;
 
     private float startUpTick = 0f;
@@ -43,10 +32,8 @@ public class Diver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //nullVector3 = new Vector3(nullFloat, nullFloat, nullFloat);
         rb = GetComponent<Rigidbody2D>();
         floaty = GetComponent<Floaty>();
-        //SwitchState(DiverState.EnterMap);
         SwitchState(DiverState.StartUp);
     }
 
@@ -97,7 +84,7 @@ public class Diver : MonoBehaviour
                         //Remove grabbed treasures from the array
                         for (int i = 0; i < treasuresNearMe.Length; i ++)
                         {
-                            if (treasuresNearMe[i] != null && treasuresNearMe[i].gameObject.GetComponent<Goldfish>().IsGrabbed() == false)
+                            if (treasuresNearMe[i] != null && treasuresNearMe[i].GetComponent<Goldfish>().IsTreasure() && treasuresNearMe[i].gameObject.GetComponent<Goldfish>().IsGrabbed() == false)
                             {
                                 treasureList.Add(treasuresNearMe[i]);
                             }
@@ -193,7 +180,6 @@ public class Diver : MonoBehaviour
                 break;
 
             case DiverState.EnterMap:
-                //floaty.PushOffTowardsRandomTargetPosition(new Vector3(floaty.nullFloat, enterMapDepth, floaty.nullFloat), enterMapSpeed);
                 floaty.SetRandomTargetPosition(floaty.nullVector3);
                 floaty.SetTargetPosition(new Vector3(floaty.targetPosition.x, enterMapDepth, floaty.targetPosition.z));
                 floaty.MoveTowardsTargetPosition(enterMapSpeed);
@@ -211,15 +197,6 @@ public class Diver : MonoBehaviour
         _state = newState;
     }
 
-    /*private void PushOffTowardsRandomTargetPosition(Vector3 positionOverride, float force)
-    {
-        floaty.SetRandomTargetPosition(positionOverride);
-
-        //Vector3 dir = targetPosition - transform.position;
-        //rb.AddForce(dir * force, ForceMode2D.Impulse);
-        floaty.MoveTowardsTargetPosition(force);
-    }*/
-
     private void Surfaced()
     {
         EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.Diver, this.gameObject);
@@ -228,45 +205,8 @@ public class Diver : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    /*private void SetRandomTargetPosition(Vector3 positionOverride)
-    {
-        if (positionOverride != null && positionOverride.x != nullFloat)
-            targetPosition.x = positionOverride.x;
-        else
-        {
-            float rollX = Random.Range(-newPositionRadius, newPositionRadius);
-            targetPosition.x = transform.position.x + rollX;
-        }
-
-        if (positionOverride != null && positionOverride.y !=nullFloat)
-            targetPosition.y = positionOverride.y;
-        else
-        {
-            float rollY = Random.Range(-newPositionRadius, newPositionRadius);
-            targetPosition.y = transform.position.y + rollY;
-        }
-
-        //Clamp values inside window
-        targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
-        targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
-    }*/
-
-    /*private void MoveTowards(Vector3 target, float force)
-    {
-        Vector3 dir = target - transform.position;
-        rb.AddForce(dir * force, ForceMode2D.Impulse);
-    }*/
-
     public void StartUp()
     {
         SwitchState(DiverState.StartUp);
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(targetPosition, targetReachedRadius);
-
-        //Gizmos.DrawWireSphere(transform.position, newPositionRadius);
     }
 }
