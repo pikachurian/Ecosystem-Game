@@ -54,4 +54,11 @@ public class Goldfish : MonoBehaviour
         grabber = grabberObject;
         SwitchState(GoldfishState.Grabbed);
     }
+
+    public bool IsGrabbed()
+    {
+        if (_state == GoldfishState.Grabbed)
+            return true;
+        return false;
+    }
 }

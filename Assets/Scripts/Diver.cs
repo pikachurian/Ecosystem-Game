@@ -33,7 +33,7 @@ public class Diver : MonoBehaviour
     private float nullFloat = 1000.1f;
     private Vector3 nullVector3 = Vector3.zero;
 
-    private GameObject targetedTreasure = null;
+    private Goldfish targetedTreasure = null;
 
     private float startUpTick = 0f;
     private float startUpTime = 1f;
@@ -92,22 +92,37 @@ public class Diver : MonoBehaviour
                     print(treasuresNearMe);
                     if (treasuresNearMe.Length > 0)
                     {
-                        //Get closest tresure
-                        GameObject closestTreasure = treasuresNearMe[0].gameObject;
-                        for (int i = 0; i < treasuresNearMe.Length; i++)
+                        List<Collider2D> treasureList = new List<Collider2D>();
+
+                        //Remove grabbed treasures from the array
+                        for (int i = 0; i < treasuresNearMe.Length; i ++)
                         {
-                            if (Vector3.Distance(transform.position, treasuresNearMe[i].transform.position) <
-                                Vector3.Distance(transform.position, closestTreasure.transform.position))
+                            if (treasuresNearMe[i].gameObject.GetComponent<Goldfish>().IsGrabbed() == false)
                             {
-                                closestTreasure = treasuresNearMe[i].gameObject;
+                                treasureList.Add(treasuresNearMe[i]);
                             }
                         }
+                        
+                        //Check if there are available treasures
+                        if (treasureList.Count > 0)
+                        {
+                            //Get closest tresure
+                            GameObject closestTreasure = treasureList[0].gameObject;
+                            for (int i = 0; i < treasureList.Count; i++)
+                            {
+                                if (Vector3.Distance(transform.position, treasureList[i].transform.position) <
+                                    Vector3.Distance(transform.position, closestTreasure.transform.position))
+                                {
+                                    closestTreasure = treasureList[i].gameObject;
+                                }
+                            }
 
-                        //Set target position to treasure
-                        print(name + " is moving to treasure");
-                        SetRandomTargetPosition(closestTreasure.transform.position);
-                        targetedTreasure = closestTreasure;
-                        SwitchState(DiverState.goingToTreasure);
+                            //Set target position to treasure
+                            print(name + " is moving to treasure");
+                            SetRandomTargetPosition(closestTreasure.transform.position);
+                            targetedTreasure = closestTreasure.GetComponent<Goldfish>();
+                            SwitchState(DiverState.goingToTreasure);
+                        }
                     }
                     else
                     {
@@ -122,7 +137,10 @@ public class Diver : MonoBehaviour
                 break;
 
             case DiverState.goingToTreasure:
-                if (Vector3.Distance(transform.position, targetPosition) <= targetReachedRadius)
+                if (targetedTreasure.IsGrabbed())
+                {
+                    SwitchState(DiverState.DiveRecovery);
+                }else if (Vector3.Distance(transform.position, targetPosition) <= targetReachedRadius)
                 {
                     targetedTreasure.GetComponent<Goldfish>().Grab(gameObject);
                     SwitchState(DiverState.Surface);
