@@ -30,4 +30,5 @@ public class FishFood : MonoBehaviour
         EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.FishFood, this.gameObject);
         Destroy(this.gameObject);
     }
+
 }

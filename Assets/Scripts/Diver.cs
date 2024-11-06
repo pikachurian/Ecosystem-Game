@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Diver : MonoBehaviour
 {
+    public AudioSource audio;
+    public AudioClip dive;
     public float surfaceY = 0f;
     public float speed = 1f;
     public float enterMapSpeed = 3f;
@@ -95,7 +97,7 @@ public class Diver : MonoBehaviour
                         {
                             //Get closest tresure
                             GameObject closestTreasure = treasureList[0].gameObject;
-                            for (int i = 0; i < treasureList.Count; i++)
+                            for (int i = 0; i < treasureList.Count; i ++)
                             {
                                 if (Vector3.Distance(transform.position, treasureList[i].transform.position) <
                                     Vector3.Distance(transform.position, closestTreasure.transform.position))
