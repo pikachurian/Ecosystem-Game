@@ -17,6 +17,7 @@ public class EntityManager : MonoBehaviour
     public List<GameObject> fishFoods = new List<GameObject>();
 
     public GameObject diverPrefab;
+    public GameObject goldfishPrefab;
     public GameObject fishFoodPrefab;
 
     public float diverSpawnX1 = -5f;
@@ -29,8 +30,16 @@ public class EntityManager : MonoBehaviour
     public float fishFoodSpawnX2 = 5f;
     public float fishFoodSpawnY2 = 5f;
 
+    public float goldfishSpawnX1 = -5f;
+    public float goldfishSpawnY1 = -5f;
+    public float goldfishSpawnX2 = 5f;
+    public float goldfishSpawnY2 = 5f;
+
     public int startingDiversMax = 8;
     public int startingDiversMin = 3;
+
+    public int startingGoldfishMax = 8;
+    public int startingGoldfishMin = 5;
 
     public float fishFoodSpawnTimeMax = 3f;
     public float fishFoodSpawnTimeMin = 0.5f;
@@ -47,6 +56,7 @@ public class EntityManager : MonoBehaviour
     private void Start()
     {
         SpawnDivers();
+        SpawnGoldfish();
     }
 
     private void Update()
@@ -75,6 +85,16 @@ public class EntityManager : MonoBehaviour
             diver.GetComponent<Diver>().StartUp();
             divers.Add(diver);*/
             InstantiateWithinArea(diverPrefab, diverSpawnX1, diverSpawnY1, diverSpawnX2, diverSpawnY2, EntityListType.Diver);
+        }
+    }
+
+    private void SpawnGoldfish()
+    {
+        int startingGoldfish = (int)Random.Range((float)startingGoldfishMin, (float)startingGoldfishMax);
+
+        for (int i = 0; i < startingGoldfish; i ++)
+        {
+            InstantiateWithinArea(goldfishPrefab, goldfishSpawnX1, goldfishSpawnY1, goldfishSpawnX2, goldfishSpawnY2, EntityListType.Goldfish);
         }
     }
 
@@ -128,5 +148,10 @@ public class EntityManager : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(new Vector3((fishFoodSpawnX1 + fishFoodSpawnX2) / 2, (fishFoodSpawnY1 + fishFoodSpawnY2) / 2, 1f),
             new Vector3(fishFoodSpawnX2 - fishFoodSpawnX1, fishFoodSpawnY2 - fishFoodSpawnY1, 1f));
+
+        //Goldfish spawn
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(new Vector3((goldfishSpawnX1 + goldfishSpawnX2) / 2, (goldfishSpawnY1 + goldfishSpawnY2) / 2, 1f),
+            new Vector3(goldfishSpawnX2 - goldfishSpawnX1, goldfishSpawnY2 - goldfishSpawnY1, 1f));
     }
 }
