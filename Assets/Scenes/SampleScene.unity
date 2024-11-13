@@ -159,7 +159,7 @@ MonoBehaviour:
   diverPrefab: {fileID: 4617993168188697533, guid: 707807a9d9888fb4699417eb66d47b9d, type: 3}
   goldfishPrefab: {fileID: 3914639174042710337, guid: d64384f1594781f43b5d832c5bc2256e, type: 3}
   fishFoodPrefab: {fileID: 1803847004642363762, guid: d3c62a01c638fa94eaaf4152c6518e00, type: 3}
-  sharkPrefab: {fileID: 0}
+  sharkPrefab: {fileID: 2208693059344645402, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
   audio: {fileID: 149523932}
   kaching: {fileID: 8300000, guid: 1937f9565cca6fa44bfdb66737c5d779, type: 3}
   diverSpawnX1: -8.28
@@ -174,13 +174,17 @@ MonoBehaviour:
   goldfishSpawnY1: 4.43
   goldfishSpawnX2: 8.48
   goldfishSpawnY2: -3.75
-  sharkSpawnY: 0
-  sharkSpawnLeftX: -1
-  sharkSpawnRightX: 1
+  sharkSpawnY: -2.24
+  sharkSpawnLeftX: -10.11
+  sharkSpawnRightX: 10.4
   startingDiversMax: 8
   startingDiversMin: 3
   startingGoldfishMax: 8
   startingGoldfishMin: 5
+  startingSharksMax: 3
+  startingSharksMin: 1
+  sharkSpawnTimeMax: 12
+  sharkSpawnTimeMin: 8
   fishFoodSpawnTimeMax: 2
   fishFoodSpawnTimeMin: 0.5
   diverSpawnTime: 10
@@ -827,6 +831,71 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1065146441}
   m_SourcePrefab: {fileID: 100100000, guid: 707807a9d9888fb4699417eb66d47b9d, type: 3}
+--- !u!1001 &6382366458787589109
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2208693059344645402, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_Name
+      value: Shark
+      objectReference: {fileID: 0}
+    - target: {fileID: 2208693059344645402, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6314444851499218779, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: startingState
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.88
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7568176627585906461, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3021ba7e19655354683327fc8d0a0b63, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -837,3 +906,4 @@ SceneRoots:
   - {fileID: 2052175777}
   - {fileID: 149523931}
   - {fileID: 134389425754283898}
+  - {fileID: 6382366458787589109}

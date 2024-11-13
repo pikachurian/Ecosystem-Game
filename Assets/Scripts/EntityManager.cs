@@ -51,6 +51,13 @@ public class EntityManager : MonoBehaviour
     public int startingGoldfishMax = 8;
     public int startingGoldfishMin = 5;
 
+    public int startingSharksMax = 3;
+    public int startingSharksMin = 1;
+
+
+    public float sharkSpawnTimeMax = 12f;
+    public float sharkSpawnTimeMin = 8f;
+
     public float fishFoodSpawnTimeMax = 3f;
     public float fishFoodSpawnTimeMin = 0.5f;
 
@@ -61,6 +68,9 @@ public class EntityManager : MonoBehaviour
 
     private float diverSpawnTick = 0f;
 
+    private float sharkSpawnTime = 1f;
+    private float sharkSpawnTick = 0f;
+
     private void OnEnable()
     {
         reference = this;
@@ -70,6 +80,7 @@ public class EntityManager : MonoBehaviour
     {
         SpawnDivers();
         SpawnGoldfish();
+        SpawnSharks();
     }
 
     private void Update()
@@ -90,6 +101,15 @@ public class EntityManager : MonoBehaviour
             diverSpawnTick = 0;
         }
         else diverSpawnTick += Time.deltaTime;
+
+        //Spawn sharks
+        if (sharkSpawnTick >= sharkSpawnTime)
+        {
+            SpawnSharksAmount(1);
+            sharkSpawnTick = 0f;
+            sharkSpawnTime = Random.Range(sharkSpawnTimeMin, sharkSpawnTimeMax);
+        }
+        else sharkSpawnTick += Time.deltaTime;
     }
 
     private void SpawnDivers()
@@ -131,6 +151,49 @@ public class EntityManager : MonoBehaviour
         for (int i = 0; i < startingGoldfish; i ++)
         {
             InstantiateWithinArea(goldfishPrefab, goldfishSpawnX1, goldfishSpawnY1, goldfishSpawnX2, goldfishSpawnY2, EntityListType.Goldfish);
+        }
+    }
+
+    private void SpawnSharks()
+    {
+        int startingSharks = (int)Random.Range((float)startingSharksMin, (float)startingSharksMax);
+
+        for (int i = 0; i < startingSharks; i++)
+        {
+            if(Random.value < 0.5)
+            {
+                //spawn right
+                Shark sharkInst = Instantiate(sharkPrefab).GetComponent<Shark>();
+                sharkInst.enteredRight = true;
+                sharkInst.transform.position = new Vector3(sharkSpawnRightX, sharkSpawnY, 0f);
+            }else
+            {
+                //spawn left
+                Shark sharkInst = Instantiate(sharkPrefab).GetComponent<Shark>();
+                sharkInst.enteredRight = false;
+                sharkInst.transform.position = new Vector3(sharkSpawnLeftX, sharkSpawnY, 0f);
+            }
+        }
+    }
+
+    private void SpawnSharksAmount(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            if (Random.value < 0.5)
+            {
+                //spawn right
+                Shark sharkInst = Instantiate(sharkPrefab).GetComponent<Shark>();
+                sharkInst.enteredRight = true;
+                sharkInst.transform.position = new Vector3(sharkSpawnRightX, sharkSpawnY, 0f);
+            }
+            else
+            {
+                //spawn left
+                Shark sharkInst = Instantiate(sharkPrefab).GetComponent<Shark>();
+                sharkInst.enteredRight = false;
+                sharkInst.transform.position = new Vector3(sharkSpawnLeftX, sharkSpawnY, 0f);
+            }
         }
     }
 

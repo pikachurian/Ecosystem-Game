@@ -44,7 +44,8 @@ public class Shark : MonoBehaviour
     private float lifeTick = 1f;
     private float stateTick = 1f;
 
-    private bool enteredRight = true;
+    [HideInInspector]
+    public bool enteredRight = true;
 
     private void Start()
     {
@@ -62,13 +63,13 @@ public class Shark : MonoBehaviour
             case SharkState.Enter:
                 if (enteredRight)
                 {
-                    rb.velocity = new Vector3(-enterSpeed, rb.velocity.y);
+                    rb.velocity = new Vector3(-enterSpeed, 0f);
                 }else
                 {
-                    rb.velocity = new Vector3(enterSpeed, rb.velocity.y);
+                    rb.velocity = new Vector3(enterSpeed, 0f);
                 }
 
-                if (transform.position.x > floaty.minX && transform.position.x < floaty.maxX)
+                if (transform.position.x > floaty.minX + 4 && transform.position.x < floaty.maxX - 4)
                 {
                     SwitchState(SharkState.Sleep);
                 }
@@ -134,14 +135,14 @@ public class Shark : MonoBehaviour
             case SharkState.Leave:
                 if (enteredRight)
                 {
-                    rb.velocity = new Vector3(-enterSpeed, rb.velocity.y);
+                    rb.velocity = new Vector3(-enterSpeed, 0f);
                 }
                 else
                 {
-                    rb.velocity = new Vector3(enterSpeed, rb.velocity.y);
+                    rb.velocity = new Vector3(enterSpeed, 0f);
                 }
 
-                if (transform.position.x > floaty.minX - 2 && transform.position.x < floaty.maxX + 2)
+                if (transform.position.x < floaty.minX - 4 || transform.position.x > floaty.maxX + 4)
                 {
                     Destroy(this.gameObject);
                 }
