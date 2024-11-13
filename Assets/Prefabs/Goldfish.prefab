@@ -249,8 +249,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingState: 2
-  audio: {fileID: 0}
-  chompSound: {fileID: 0}
+  goldfishPrefab: {fileID: 3914639174042710337}
+  chompSound: {fileID: 8300000, guid: 26337df0fa6cf2840a516b5835b4fc61, type: 3}
+  bornSound: {fileID: 8300000, guid: 001e30624f1f3594fb40ac63c6580536, type: 3}
   spriteRenderer: {fileID: 6385396198115345387}
   activeSprite: {fileID: 21300000, guid: 436052bfaba7b7f488c65e57b20747d6, type: 3}
   treasureSprite: {fileID: 21300000, guid: 08aae6d6c39e2ce4da1a97b036752ff8, type: 3}
@@ -259,12 +260,15 @@ MonoBehaviour:
   foodSearchRadius: 4
   childrenMax: 5
   childrenMin: 2
+  foodNeededMax: 5
+  foodNeededMin: 3
+  treasureVelocityDampen: 0.2
   goldfishMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   fishFoodMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!114 &4317551286893401285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,10 +285,11 @@ MonoBehaviour:
   waterFricLerp: 0.1
   minX: -8.49
   maxX: 8.5
-  minY: -4.42
+  minY: -4.46
   maxY: 4.7
   newPositionRadius: 2.13
-  targetReachedRadius: 1
+  targetReachedRadius: 0.5
+  adjustRotationLerp: 0.05
   targetPosition: {x: 7.270088, y: -2.1128516, z: 0}
   nullFloat: 1000.1
   nullVector3: {x: 1000.1, y: 1000.1, z: 1000.1}

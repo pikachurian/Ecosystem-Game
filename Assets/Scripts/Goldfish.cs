@@ -6,8 +6,10 @@ using UnityEngine.UIElements;
 public class Goldfish : MonoBehaviour
 {
     public GoldfishState startingState;
-    public AudioSource audio;
+    private AudioSource audio;
+    public GameObject goldfishPrefab;
     public AudioClip chompSound;
+    public AudioClip bornSound;
     public SpriteRenderer spriteRenderer;
     public Sprite activeSprite;
     public Sprite treasureSprite;
@@ -19,6 +21,11 @@ public class Goldfish : MonoBehaviour
 
     public int childrenMax = 3;
     public int childrenMin = 2;
+
+    public int foodNeededMax = 5;
+    public int foodNeededMin = 3;
+
+    public float treasureVelocityDampen = 0.2f;
 
     public LayerMask goldfishMask;
     public LayerMask fishFoodMask;
@@ -33,11 +40,19 @@ public class Goldfish : MonoBehaviour
     private FishFood targetedFood;
     private Goldfish mate;
 
+    private int childrenToSpawn = 1;
+
+    private int foodEaten = 0;
+    private int foodNeeded = 3;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         floaty = GetComponent<Floaty>();
+        audio = GetComponent<AudioSource>();
         SwitchState(startingState);
+        foodNeeded = Random.Range(foodNeededMin, foodNeededMax);
+        childrenToSpawn = Random.Range(childrenMin, childrenMax);
     }
 
     void FixedUpdate()
@@ -58,24 +73,38 @@ public class Goldfish : MonoBehaviour
                     Collider2D[] foodNearMe = Physics2D.OverlapCircleAll(transform.position, foodSearchRadius, fishFoodMask);
                     if(foodNearMe.Length > 0)
                     {
-                        GameObject closestFood = foodNearMe[0].gameObject;
-                        for(int i = 0; i < foodNearMe.Length; i ++)
+                        List<Collider2D> foodList = new List<Collider2D>();
+
+                        //Remove eaten food
+                        for (int i = 0; i < foodNearMe.Length; i ++)
                         {
-                            if (Vector3.Distance(transform.position, foodNearMe[i].transform.position) <
-                                    Vector3.Distance(transform.position, closestFood.transform.position))
-                            {
-                                closestFood = foodNearMe[i].gameObject;
-                            }
+                            if (foodNearMe[i] != null && foodNearMe[i].GetComponent<FishFood>().isEaten == false)
+                                foodList.Add(foodNearMe[i]);
                         }
 
-                        //Go to food
-                        floaty.SetTargetPosition(closestFood.transform.position);
-                        targetedFood = closestFood.GetComponent<FishFood>();
-                        SwitchState(GoldfishState.GoingToFood);
+                        if (foodList.Count > 0)
+                        {
+                            GameObject closestFood = foodList[0].gameObject;
+                            for (int i = 0; i < foodList.Count; i++)
+                            {
+                                if (Vector3.Distance(transform.position, foodList[i].transform.position) <
+                                        Vector3.Distance(transform.position, closestFood.transform.position))
+                                {
+                                    closestFood = foodList[i].gameObject;
+                                }
+                            }
+
+                            //Go to food
+                            floaty.SetTargetPosition(closestFood.transform.position);
+                            targetedFood = closestFood.GetComponent<FishFood>();
+                            SwitchState(GoldfishState.GoingToFood);
+                        }
                     }
+                    
+                    if(_state != GoldfishState.GoingToFood)
+                        floaty.SetRandomTargetPosition(floaty.nullVector3);
                     #endregion
 
-                    floaty.SetRandomTargetPosition(floaty.nullVector3);
                 }
 
                 floaty.MoveTowardsTargetPosition(speed);
@@ -83,14 +112,31 @@ public class Goldfish : MonoBehaviour
                 break;
 
             case GoldfishState.GoingToFood:
-                if(GameObject.Find(targetedFood.name) == null)
+                if(targetedFood.isEaten)
                 {
                     SwitchState(GoldfishState.Wandering);
                     targetedFood = null;
                 }else if (floaty.TargetPositionReached())
                 {
+                    targetedFood.GetComponent<FishFood>().Eaten();
+                    audio.PlayOneShot(chompSound);
 
+                    foodEaten += 1;
+                    if (foodEaten >= foodNeeded)
+                    {
+                        SwitchState(GoldfishState.Reproducing);
+                    }
                 }
+
+                if (targetedFood != null)
+                    floaty.SetTargetPosition(targetedFood.transform.position);
+
+                floaty.MoveTowardsTargetPosition(speed);
+                floaty.ApplyFriction();
+                break;
+
+            case GoldfishState.Reproducing:
+                SwitchState(GoldfishState.Treasure);
                 break;
         }
     }
@@ -113,6 +159,13 @@ public class Goldfish : MonoBehaviour
 
             case GoldfishState.Treasure:
                 spriteRenderer.sprite = treasureSprite;
+                break;
+
+            case GoldfishState.Reproducing:
+                for (int i = 0; i < childrenToSpawn; i ++)
+                    Instantiate(goldfishPrefab);
+                audio.PlayOneShot(bornSound);
+                rb.velocity *= treasureVelocityDampen;
                 break;
         }
 

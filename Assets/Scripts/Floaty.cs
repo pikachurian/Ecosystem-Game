@@ -17,6 +17,8 @@ public class Floaty : MonoBehaviour
     public float newPositionRadius = 4f;
     public float targetReachedRadius = 1f;
 
+    public float adjustRotationLerp = 0.05f;
+
     public Vector3 targetPosition = Vector3.zero;
     [HideInInspector]
     public float nullFloat = 1000.1f;
@@ -33,6 +35,10 @@ public class Floaty : MonoBehaviour
 
     private void Update()
     {
+        //Adjust rotation
+        rb.rotation = Mathf.Lerp(rb.rotation, 0f, adjustRotationLerp);
+
+        //Flip sprite
         if (rb.velocity.x > 0)
             spriteRenderer.flipX = false;
         else
