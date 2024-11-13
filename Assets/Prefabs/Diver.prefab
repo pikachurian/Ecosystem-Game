@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3fe04ddb3569140b006753cf95d39f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 5381916582019130730}
   waterFricLerp: 0.1
   minX: -8.57
   maxX: 8.64

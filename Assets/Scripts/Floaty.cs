@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Floaty : MonoBehaviour
 {
+    public SpriteRenderer spriteRenderer;
+
     public float waterFricLerp = 0.5f;
 
     public float minX = 0f;
@@ -28,6 +30,15 @@ public class Floaty : MonoBehaviour
         nullVector3 = new Vector3(nullFloat, nullFloat, nullFloat);
         rb = GetComponent<Rigidbody2D>();
     }
+
+    private void Update()
+    {
+        if (rb.velocity.x > 0)
+            spriteRenderer.flipX = false;
+        else
+            spriteRenderer.flipX = true;
+    }
+
     public void ApplyFriction(float frictionLerpOverride = 1000)
     {
         if(frictionLerpOverride != 1000)
