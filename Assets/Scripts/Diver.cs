@@ -203,6 +203,7 @@ public class Diver : MonoBehaviour
     private void Surfaced()
     {
         EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.Diver, this.gameObject);
+        EntityManager.reference.DiverReturned();
         print(name + " surfaced");
         Destroy(targetedTreasure.gameObject);
         Destroy(this.gameObject);

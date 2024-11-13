@@ -20,6 +20,9 @@ public class EntityManager : MonoBehaviour
     public GameObject goldfishPrefab;
     public GameObject fishFoodPrefab;
 
+    public AudioSource audio;
+    public AudioClip kaching;
+
     public float diverSpawnX1 = -5f;
     public float diverSpawnY1 = -5f;
     public float diverSpawnX2 = 5f;
@@ -44,9 +47,12 @@ public class EntityManager : MonoBehaviour
     public float fishFoodSpawnTimeMax = 3f;
     public float fishFoodSpawnTimeMin = 0.5f;
 
+    public float diverSpawnTime = 10f;
+
     private float fishFoodSpawnTime = 1f;
     private float fishFoodSpawnTick = 0f;
 
+    private float diverSpawnTick = 0f;
 
     private void OnEnable()
     {
@@ -69,6 +75,14 @@ public class EntityManager : MonoBehaviour
             fishFoodSpawnTick = 0;
         }
         else fishFoodSpawnTick += Time.deltaTime;
+
+        //Spawn divers
+        if (diverSpawnTick >= diverSpawnTime)
+        {
+            SpawnDiversAmount(1);
+            diverSpawnTick = 0;
+        }
+        else diverSpawnTick += Time.deltaTime;
     }
 
     private void SpawnDivers()
@@ -86,6 +100,21 @@ public class EntityManager : MonoBehaviour
             divers.Add(diver);*/
             InstantiateWithinArea(diverPrefab, diverSpawnX1, diverSpawnY1, diverSpawnX2, diverSpawnY2, EntityListType.Diver);
         }
+    }
+
+    private void SpawnDiversAmount(int amount)
+    {
+        for (int i = 0; i < amount; i ++)
+        {
+            InstantiateWithinArea(diverPrefab, diverSpawnX1, diverSpawnY1, diverSpawnX2, diverSpawnY2, EntityListType.Diver);
+        }
+    }
+
+    public void DiverReturned()
+    {
+        audio.PlayOneShot(kaching);
+
+        diverSpawnTick = diverSpawnTick * 0.8f;
     }
 
     private void SpawnGoldfish()
