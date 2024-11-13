@@ -293,6 +293,7 @@ MonoBehaviour:
   targetPosition: {x: 7.270088, y: -2.1128516, z: 0}
   nullFloat: 1000.1
   nullVector3: {x: 1000.1, y: 1000.1, z: 1000.1}
+  rb: {fileID: 8635775814024928878}
 --- !u!82 &2868738757268716631
 AudioSource:
   m_ObjectHideFlags: 0

@@ -160,9 +160,11 @@ MonoBehaviour:
   maxY: 4.26
   newPositionRadius: 4
   targetReachedRadius: 1
+  adjustRotationLerp: 0.05
   targetPosition: {x: 0, y: 0, z: 0}
   nullFloat: 1000.1
   nullVector3: {x: 0, y: 0, z: 0}
+  rb: {fileID: 7480275496524327527}
 --- !u!82 &7284444994643573060
 AudioSource:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class Floaty : MonoBehaviour
     [HideInInspector]
     public Vector3 nullVector3 = Vector3.zero;
 
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
 
     private void Start()
     {
