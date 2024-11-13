@@ -78,7 +78,7 @@ public class Diver : MonoBehaviour
                 {
                     //Check if treasure is within the newPositionRadius
                     Collider2D[] treasuresNearMe = Physics2D.OverlapCircleAll(transform.position, floaty.newPositionRadius, treasureMask);
-                    print(treasuresNearMe);
+                    //print(treasuresNearMe);
                     if (treasuresNearMe.Length > 0)
                     {
                         List<Collider2D> treasureList = new List<Collider2D>();

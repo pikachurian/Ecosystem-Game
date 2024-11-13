@@ -80,6 +80,7 @@ public class Floaty : MonoBehaviour
         //Clamp values inside window
         targetPosition.x = Mathf.Clamp(targetPosition.x, minX, maxX);
         targetPosition.y = Mathf.Clamp(targetPosition.y, minY, maxY);
+        print("TargetX " + (targetPosition.x - transform.position.x) + " radius " + newPositionRadius);
     }
 
     public void SetTargetPosition(Vector3 position)
