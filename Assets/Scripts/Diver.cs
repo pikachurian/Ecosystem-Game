@@ -113,7 +113,8 @@ public class Diver : MonoBehaviour
                             SwitchState(DiverState.GoingToTreasure);
                         }
                     }
-                    else
+                    
+                    if(_state != DiverState.GoingToTreasure)
                     {
 
                         floaty.SetRandomTargetPosition(floaty.nullVector3);
