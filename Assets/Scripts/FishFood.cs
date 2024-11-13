@@ -62,7 +62,7 @@ public class FishFood : MonoBehaviour
 
     public void Despawn()
     {
-        EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.FishFood, this.gameObject);
+        //EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.FishFood, this.gameObject);
         Destroy(this.gameObject);
     }
 

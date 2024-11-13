@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    public enum EntityListType { Diver, Goldfish, FishFood};
+    public enum EntityListType { Diver, Goldfish, FishFood, Shark};
 
 
     [HideInInspector]
@@ -15,10 +15,13 @@ public class EntityManager : MonoBehaviour
     public List<GameObject> goldfish = new List<GameObject>();
     //[HideInInspector]
     public List<GameObject> fishFoods = new List<GameObject>();
+    [HideInInspector]
+    public List<GameObject> sharks = new List<GameObject>();
 
     public GameObject diverPrefab;
     public GameObject goldfishPrefab;
     public GameObject fishFoodPrefab;
+    public GameObject sharkPrefab;
 
     public AudioSource audio;
     public AudioClip kaching;
@@ -37,6 +40,10 @@ public class EntityManager : MonoBehaviour
     public float goldfishSpawnY1 = -5f;
     public float goldfishSpawnX2 = 5f;
     public float goldfishSpawnY2 = 5f;
+
+    public float sharkSpawnY = 0f;
+    public float sharkSpawnLeftX = -1f;
+    public float sharkSpawnRightX = 1f;
 
     public int startingDiversMax = 8;
     public int startingDiversMin = 3;
@@ -128,7 +135,7 @@ public class EntityManager : MonoBehaviour
     }
 
     public void DeleteInstanceFromList(EntityListType listType, GameObject instance)
-    {
+    {/*
         switch(listType)
         {
             case EntityListType.Diver:
@@ -142,7 +149,7 @@ public class EntityManager : MonoBehaviour
             case EntityListType.FishFood:
                 fishFoods.Remove(instance);
                 break;
-        }
+        }*/
     }
 
     private void InstantiateWithinArea(GameObject prefab, float x1, float y1, float x2, float y2, EntityListType listType)
@@ -157,13 +164,13 @@ public class EntityManager : MonoBehaviour
         if(diver != null)
             diver.StartUp();
 
-        switch(listType)
+        /*switch(listType)
         {
             case EntityListType.Diver: divers.Add(instance); break;
             case EntityListType.Goldfish: goldfish.Add(instance); break;
             case EntityListType.FishFood: fishFoods.Add(instance); break;
-
-        }
+            //case EntityListType.Shark: sharks.Add(instance); break;
+        }*/
     }
 
     private void OnDrawGizmosSelected()
@@ -182,5 +189,9 @@ public class EntityManager : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireCube(new Vector3((goldfishSpawnX1 + goldfishSpawnX2) / 2, (goldfishSpawnY1 + goldfishSpawnY2) / 2, 1f),
             new Vector3(goldfishSpawnX2 - goldfishSpawnX1, goldfishSpawnY2 - goldfishSpawnY1, 1f));
+
+        //Shark spawn
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(new Vector3(sharkSpawnLeftX, sharkSpawnY, 0f), new Vector3(sharkSpawnRightX, sharkSpawnY, 0f));
     }
 }

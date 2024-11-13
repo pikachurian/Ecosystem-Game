@@ -27,6 +27,10 @@ public class Floaty : MonoBehaviour
 
     public Rigidbody2D rb;
 
+    public bool isEaten = false;
+
+    public float eatenDespawnTime = 0.5f;
+
     private void Start()
     {
         nullVector3 = new Vector3(nullFloat, nullFloat, nullFloat);
@@ -43,6 +47,16 @@ public class Floaty : MonoBehaviour
             spriteRenderer.flipX = false;
         else
             spriteRenderer.flipX = true;
+
+        //
+        if (isEaten)
+        {
+            if (eatenDespawnTime <= 0f)
+            {
+                Destroy(this.gameObject);
+            }
+            else eatenDespawnTime -= Time.deltaTime;
+        }
     }
 
     public void ApplyFriction(float frictionLerpOverride = 1000)

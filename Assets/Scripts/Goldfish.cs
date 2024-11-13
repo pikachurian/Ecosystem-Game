@@ -179,6 +179,20 @@ public class Goldfish : MonoBehaviour
         SwitchState(GoldfishState.Grabbed);
     }
 
+    public void Eaten()
+    {
+        floaty.isEaten = true;
+        spriteRenderer.enabled = false;
+        this.enabled = false;
+    }
+
+    public void Ungrab()
+    {
+        grabber = null;
+        rb.velocity *= treasureVelocityDampen;
+        SwitchState(GoldfishState.Treasure);
+    }
+
     public bool IsGrabbed()
     {
         if (_state == GoldfishState.Grabbed)

@@ -155,9 +155,11 @@ MonoBehaviour:
   divers: []
   goldfish: []
   fishFoods: []
+  sharks: []
   diverPrefab: {fileID: 4617993168188697533, guid: 707807a9d9888fb4699417eb66d47b9d, type: 3}
   goldfishPrefab: {fileID: 3914639174042710337, guid: d64384f1594781f43b5d832c5bc2256e, type: 3}
   fishFoodPrefab: {fileID: 1803847004642363762, guid: d3c62a01c638fa94eaaf4152c6518e00, type: 3}
+  sharkPrefab: {fileID: 0}
   audio: {fileID: 149523932}
   kaching: {fileID: 8300000, guid: 1937f9565cca6fa44bfdb66737c5d779, type: 3}
   diverSpawnX1: -8.28
@@ -172,11 +174,14 @@ MonoBehaviour:
   goldfishSpawnY1: 4.43
   goldfishSpawnX2: 8.48
   goldfishSpawnY2: -3.75
+  sharkSpawnY: 0
+  sharkSpawnLeftX: -1
+  sharkSpawnRightX: 1
   startingDiversMax: 8
   startingDiversMin: 3
   startingGoldfishMax: 8
   startingGoldfishMin: 5
-  fishFoodSpawnTimeMax: 3
+  fishFoodSpawnTimeMax: 2
   fishFoodSpawnTimeMin: 0.5
   diverSpawnTime: 10
 --- !u!4 &149523931

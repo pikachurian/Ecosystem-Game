@@ -7,6 +7,7 @@ public class Diver : MonoBehaviour
 {
     public AudioSource audio;
     public AudioClip dive;
+    public SpriteRenderer spriteRenderer;
     public float surfaceY = 0f;
     public float speed = 1f;
     public float enterMapSpeed = 3f;
@@ -202,11 +203,19 @@ public class Diver : MonoBehaviour
 
     private void Surfaced()
     {
-        EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.Diver, this.gameObject);
+        //EntityManager.reference.DeleteInstanceFromList(EntityManager.EntityListType.Diver, this.gameObject);
         EntityManager.reference.DiverReturned();
         print(name + " surfaced");
         Destroy(targetedTreasure.gameObject);
         Destroy(this.gameObject);
+    }
+
+    public void Eaten()
+    {
+        floaty.isEaten = true;
+        targetedTreasure.Ungrab();
+        spriteRenderer.enabled = false;
+        this.enabled = false;
     }
 
     public void StartUp()
